@@ -1,0 +1,623 @@
+{"aggregations": {
+        "daily_stats": {
+            "buckets": [
+                {
+                    "key_as_string": "2025-08-18",
+                    "key": 1755475200000,
+                    "doc_count": 418,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": -0.5923818122934211
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": 0.17707518953384394
+                    },
+                    "daily_volume": {
+                        "value": 418
+                    }
+                },
+                {
+                    "key_as_string": "2025-08-19",
+                    "key": 1755561600000,
+                    "doc_count": 168,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": -9.757012040132569E-4
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": 0.1728965244699447
+                    },
+                    "daily_volume": {
+                        "value": 168
+                    }
+                },
+                {
+                    "key_as_string": "2025-08-20",
+                    "key": 1755648000000,
+                    "doc_count": 123,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": 0.37657933495181606
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": -0.07346374889820571
+                    },
+                    "daily_volume": {
+                        "value": 123
+                    }
+                },
+                {
+                    "key_as_string": "2025-08-21",
+                    "key": 1755734400000,
+                    "doc_count": 136,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": -0.2681952361291384
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": 0.10019467982655282
+                    },
+                    "daily_volume": {
+                        "value": 136
+                    }
+                },
+                {
+                    "key_as_string": "2025-08-22",
+                    "key": 1755820800000,
+                    "doc_count": 258,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": -0.34191446739804837
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": 0.24499320343151226
+                    },
+                    "daily_volume": {
+                        "value": 258
+                    }
+                },
+                {
+                    "key_as_string": "2025-08-23",
+                    "key": 1755907200000,
+                    "doc_count": 55,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": 0.025110925056717612
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": 0.1407931068827483
+                    },
+                    "daily_volume": {
+                        "value": 55
+                    }
+                },
+                {
+                    "key_as_string": "2025-08-24",
+                    "key": 1755993600000,
+                    "doc_count": 41,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": 0.31358339701120447
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": 0.3738618147809331
+                    },
+                    "daily_volume": {
+                        "value": 41
+                    }
+                },
+                {
+                    "key_as_string": "2025-08-25",
+                    "key": 1756080000000,
+                    "doc_count": 112,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": 0.37407887978146653
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": 0.08616823380413864
+                    },
+                    "daily_volume": {
+                        "value": 112
+                    }
+                },
+                {
+                    "key_as_string": "2025-08-26",
+                    "key": 1756166400000,
+                    "doc_count": 115,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": 0.22470615627649038
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": 0.23900256558604863
+                    },
+                    "daily_volume": {
+                        "value": 115
+                    }
+                },
+                {
+                    "key_as_string": "2025-08-27",
+                    "key": 1756252800000,
+                    "doc_count": 100,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": 0.3995139061287045
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": 0.294774786317721
+                    },
+                    "daily_volume": {
+                        "value": 100
+                    }
+                },
+                {
+                    "key_as_string": "2025-08-28",
+                    "key": 1756339200000,
+                    "doc_count": 204,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": -0.24321240698947233
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": 0.1205051922668502
+                    },
+                    "daily_volume": {
+                        "value": 204
+                    }
+                },
+                {
+                    "key_as_string": "2025-08-29",
+                    "key": 1756425600000,
+                    "doc_count": 334,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": -0.6108530762599792
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": -0.011055525470368876
+                    },
+                    "daily_volume": {
+                        "value": 334
+                    }
+                },
+                {
+                    "key_as_string": "2025-08-30",
+                    "key": 1756512000000,
+                    "doc_count": 72,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": -0.3447935792307059
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": 0.01287880717104094
+                    },
+                    "daily_volume": {
+                        "value": 72
+                    }
+                },
+                {
+                    "key_as_string": "2025-08-31",
+                    "key": 1756598400000,
+                    "doc_count": 75,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": 0.10865179225802421
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": 0.09756073405345281
+                    },
+                    "daily_volume": {
+                        "value": 75
+                    }
+                },
+                {
+                    "key_as_string": "2025-09-01",
+                    "key": 1756684800000,
+                    "doc_count": 75,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": 0.28208454539378486
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": -0.015025216912229855
+                    },
+                    "daily_volume": {
+                        "value": 75
+                    }
+                },
+                {
+                    "key_as_string": "2025-09-02",
+                    "key": 1756771200000,
+                    "doc_count": 119,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": 0.3392477756280045
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": 0.10621189170501374
+                    },
+                    "daily_volume": {
+                        "value": 119
+                    }
+                },
+                {
+                    "key_as_string": "2025-09-03",
+                    "key": 1756857600000,
+                    "doc_count": 84,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": 0.35672392148990184
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": 0.13664490162045695
+                    },
+                    "daily_volume": {
+                        "value": 84
+                    }
+                },
+                {
+                    "key_as_string": "2025-09-04",
+                    "key": 1756944000000,
+                    "doc_count": 93,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": 0.5595113441187848
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": 0.34528799491223466
+                    },
+                    "daily_volume": {
+                        "value": 93
+                    }
+                },
+                {
+                    "key_as_string": "2025-09-05",
+                    "key": 1757030400000,
+                    "doc_count": 181,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": 0.4575504652116427
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": 0.44870635412005677
+                    },
+                    "daily_volume": {
+                        "value": 181
+                    }
+                },
+                {
+                    "key_as_string": "2025-09-06",
+                    "key": 1757116800000,
+                    "doc_count": 61,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": 0.43221723373796117
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": 0.2822194045684377
+                    },
+                    "daily_volume": {
+                        "value": 61
+                    }
+                },
+                {
+                    "key_as_string": "2025-09-07",
+                    "key": 1757203200000,
+                    "doc_count": 25,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": 0.351430766582489
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": 0.4136647808551788
+                    },
+                    "daily_volume": {
+                        "value": 25
+                    }
+                },
+                {
+                    "key_as_string": "2025-09-08",
+                    "key": 1757289600000,
+                    "doc_count": 104,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": 0.41364831004578334
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": 0.03835700545459986
+                    },
+                    "daily_volume": {
+                        "value": 104
+                    }
+                },
+                {
+                    "key_as_string": "2025-09-09",
+                    "key": 1757376000000,
+                    "doc_count": 139,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": 0.41069466455859677
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": 0.17322993302624
+                    },
+                    "daily_volume": {
+                        "value": 139
+                    }
+                },
+                {
+                    "key_as_string": "2025-09-10",
+                    "key": 1757462400000,
+                    "doc_count": 185,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": 0.46643417983039004
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": 0.16164207068347447
+                    },
+                    "daily_volume": {
+                        "value": 185
+                    }
+                },
+                {
+                    "key_as_string": "2025-09-11",
+                    "key": 1757548800000,
+                    "doc_count": 127,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": 0.32636592167568956
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": 0.34853708935080197
+                    },
+                    "daily_volume": {
+                        "value": 127
+                    }
+                },
+                {
+                    "key_as_string": "2025-09-12",
+                    "key": 1757635200000,
+                    "doc_count": 100,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": 0.45231831633485853
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": 0.26681759586557746
+                    },
+                    "daily_volume": {
+                        "value": 100
+                    }
+                },
+                {
+                    "key_as_string": "2025-09-13",
+                    "key": 1757721600000,
+                    "doc_count": 49,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": 0.45572640229852834
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": 0.26195535261412056
+                    },
+                    "daily_volume": {
+                        "value": 49
+                    }
+                },
+                {
+                    "key_as_string": "2025-09-14",
+                    "key": 1757808000000,
+                    "doc_count": 57,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": 0.3757402872413462
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": 0.2411546252275768
+                    },
+                    "daily_volume": {
+                        "value": 57
+                    }
+                },
+                {
+                    "key_as_string": "2025-09-15",
+                    "key": 1757894400000,
+                    "doc_count": 176,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": 0.5029925109966743
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": 0.44872228177899326
+                    },
+                    "daily_volume": {
+                        "value": 176
+                    }
+                },
+                {
+                    "key_as_string": "2025-09-16",
+                    "key": 1757980800000,
+                    "doc_count": 158,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": 0.12997247896723071
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": -0.09221014958994958
+                    },
+                    "daily_volume": {
+                        "value": 158
+                    }
+                },
+                {
+                    "key_as_string": "2025-09-17",
+                    "key": 1758067200000,
+                    "doc_count": 158,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": 0.2879617117533955
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": 0.004271651759649379
+                    },
+                    "daily_volume": {
+                        "value": 158
+                    }
+                },
+                {
+                    "key_as_string": "2025-09-18",
+                    "key": 1758153600000,
+                    "doc_count": 151,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": 0.2375860845651601
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": -0.0028991861120853204
+                    },
+                    "daily_volume": {
+                        "value": 151
+                    }
+                },
+                {
+                    "key_as_string": "2025-09-19",
+                    "key": 1758240000000,
+                    "doc_count": 140,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": 0.20653349179774522
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": -0.07614935652485916
+                    },
+                    "daily_volume": {
+                        "value": 140
+                    }
+                },
+                {
+                    "key_as_string": "2025-09-20",
+                    "key": 1758326400000,
+                    "doc_count": 62,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": 0.3585038979898297
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": 0.025232792531530702
+                    },
+                    "daily_volume": {
+                        "value": 62
+                    }
+                },
+                {
+                    "key_as_string": "2025-09-21",
+                    "key": 1758412800000,
+                    "doc_count": 61,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": 0.5119809673824272
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": 0.38169244985233564
+                    },
+                    "daily_volume": {
+                        "value": 61
+                    }
+                },
+                {
+                    "key_as_string": "2025-09-22",
+                    "key": 1758499200000,
+                    "doc_count": 136,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": 0.3637030194992857
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": 0.2039369447156787
+                    },
+                    "daily_volume": {
+                        "value": 136
+                    }
+                },
+                {
+                    "key_as_string": "2025-09-23",
+                    "key": 1758585600000,
+                    "doc_count": 107,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": 0.4387108642155322
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": 0.09102973546484643
+                    },
+                    "daily_volume": {
+                        "value": 107
+                    }
+                },
+                {
+                    "key_as_string": "2025-09-24",
+                    "key": 1758672000000,
+                    "doc_count": 99,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": 0.3674914168965335
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": 0.10180058002923474
+                    },
+                    "daily_volume": {
+                        "value": 99
+                    }
+                },
+                {
+                    "key_as_string": "2025-09-25",
+                    "key": 1758758400000,
+                    "doc_count": 91,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": 0.403913231587017
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": 0.2793652971408197
+                    },
+                    "daily_volume": {
+                        "value": 91
+                    }
+                },
+                {
+                    "key_as_string": "2025-09-26",
+                    "key": 1758844800000,
+                    "doc_count": 104,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": 0.4017784702502048
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": 0.307529255353774
+                    },
+                    "daily_volume": {
+                        "value": 104
+                    }
+                },
+                {
+                    "key_as_string": "2025-09-27",
+                    "key": 1758931200000,
+                    "doc_count": 37,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": 0.2309407793690224
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": 0.015539136085961316
+                    },
+                    "daily_volume": {
+                        "value": 37
+                    }
+                },
+                {
+                    "key_as_string": "2025-09-28",
+                    "key": 1759017600000,
+                    "doc_count": 42,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": 0.4796303010412625
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": 0.06316476554742881
+                    },
+                    "daily_volume": {
+                        "value": 42
+                    }
+                },
+                {
+                    "key_as_string": "2025-09-29",
+                    "key": 1759104000000,
+                    "doc_count": 96,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": 0.3339066041468565
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": 0.2022234899486648
+                    },
+                    "daily_volume": {
+                        "value": 96
+                    }
+                },
+                {
+                    "key_as_string": "2025-09-30",
+                    "key": 1759190400000,
+                    "doc_count": 93,
+                    "avg_fsai_Sentiment_score_text": {
+                        "value": 0.3939443883355907
+                    },
+                    "avg_fsai_Sentiment_score": {
+                        "value": 0.09056529278556506
+                    },
+                    "daily_volume": {
+                        "value": 93
+                    }
+                }
+            ]
+        }
+    }
+}
