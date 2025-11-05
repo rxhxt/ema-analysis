@@ -2,11 +2,12 @@ import streamlit as st
 import pandas as pd
 import requests
 from datetime import date, timedelta
+import altair as alt
 
 # ----------------------------------------
 # 🔧 Configuration
 # ----------------------------------------
-API_URL = "https://25becp9ef3.execute-api.ap-south-1.amazonaws.com/dev/ema-alerts"  # <-- replace with your Lambda endpoint
+API_URL = "https://25becp9ef3.execute-api.ap-south-1.amazonaws.com/dev/ema-alerts"
 
 st.set_page_config(page_title="Momentum Signal Dashboard", layout="wide")
 
@@ -14,7 +15,7 @@ st.set_page_config(page_title="Momentum Signal Dashboard", layout="wide")
 # 🧭 Header
 # ----------------------------------------
 st.title("📈 Momentum Signal Dashboard")
-st.markdown("Use this dashboard to fetch **momentum trading signals** from your AWS Lambda API.")
+st.markdown("Use this dashboard to fetch **momentum trading signals** and visualize price vs momentum trends.")
 
 # ----------------------------------------
 # 🧾 Input form
@@ -33,7 +34,7 @@ with col4:
 with col5:
     ma_type = st.selectbox("Moving Average Type", ["ema", "sma"], index=0)
 with col6:
-    method = st.selectbox("Signal Logic", ["standard", "ema2"], index=0)  # ✅ new toggle
+    method = st.selectbox("Signal Logic", ["standard", "ema2"], index=0)
 
 # ----------------------------------------
 # 🧩 Validation
@@ -53,7 +54,7 @@ if st.button("Get Signals"):
             "start_date": str(start_date),
             "end_date": str(end_date),
             "ma_type": ma_type.lower(),
-            "method": method.lower()  # ✅ send method key
+            "method": method.lower()
         }
     }
 
@@ -99,7 +100,6 @@ if st.button("Get Signals"):
                             return "background-color: #7f8c8d; color: white"
                     return "background-color: #95a5a6; color: white"
 
-                # Display styled table
                 st.subheader("📊 Signal Table")
                 st.dataframe(
                     df.style.applymap(color_signal, subset=["Signal"]),
@@ -108,18 +108,17 @@ if st.button("Get Signals"):
                 )
 
                 # ----------------------------------------
-                # 📉 Momentum Chart
+                # 📈 Combined Chart: Price + Momentum
                 # ----------------------------------------
-                with st.expander("📉 Show Momentum Chart"):
-                    import altair as alt
-
+                with st.expander("📉 Show Price & Momentum Chart"):
                     if "MomentumScore" in df.columns:
-                        chart = (
-                            alt.Chart(df)
-                            .mark_line(point=True)
+                        base = alt.Chart(df).encode(x="date:T")
+
+                        # Momentum line (colored by signal)
+                        momentum_line = (
+                            base.mark_line(point=True, strokeWidth=2)
                             .encode(
-                                x="date:T",
-                                y="MomentumScore:Q",
+                                y=alt.Y("MomentumScore:Q", axis=alt.Axis(title="Momentum Score")),
                                 color=alt.Color(
                                     "Signal:N",
                                     scale=alt.Scale(
@@ -146,13 +145,28 @@ if st.button("Get Signals"):
                                     "Confidence:N",
                                 ],
                             )
-                            .properties(
-                                title=f"{ticker} Momentum Score ({method.upper()} | {ma_type.upper()})",
-                                width=900,
-                                height=400,
-                            )
                         )
-                        st.altair_chart(chart, use_container_width=True)
+
+                        charts = [momentum_line]
+
+                        # ✅ Add price line if available
+                        if "price" in df.columns:
+                            price_line = (
+                                base.mark_line(color="#3498db", strokeDash=[3, 2])
+                                .encode(
+                                    y=alt.Y("price:Q", axis=alt.Axis(title="Price (USD)", orient="right")),
+                                    tooltip=["date:T", "price:Q"]
+                                )
+                            )
+                            charts.append(price_line)
+
+                        final_chart = alt.layer(*charts).resolve_scale(y="independent").properties(
+                            title=f"{ticker} Price vs Momentum ({method.upper()} | {ma_type.upper()})",
+                            width=900,
+                            height=400,
+                        )
+
+                        st.altair_chart(final_chart, use_container_width=True)
                     else:
                         st.warning("No 'MomentumScore' column found for plotting.")
 
