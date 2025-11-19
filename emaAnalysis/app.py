@@ -8,6 +8,7 @@ import altair as alt
 # 🔧 Configuration
 # ----------------------------------------
 API_URL = "https://25becp9ef3.execute-api.ap-south-1.amazonaws.com/dev/ema-alerts"
+ENV_KEY = "dev"  # or "prod" / "stable"
 
 st.set_page_config(page_title="Momentum Signal Dashboard", layout="wide")
 
@@ -15,25 +16,23 @@ st.set_page_config(page_title="Momentum Signal Dashboard", layout="wide")
 # 🧭 Header
 # ----------------------------------------
 st.title("📈 Momentum Signal Dashboard")
-st.markdown("Use this dashboard to fetch **momentum trading signals** and visualize price vs momentum trends.")
+st.markdown("Fetch **momentum trading signals** and visualize price vs momentum trends for multiple tickers.")
 
 # ----------------------------------------
 # 🧾 Input form
 # ----------------------------------------
 col1, col2, col3 = st.columns(3)
 with col1:
-    ticker = st.text_input("Ticker", "TSLA").upper()
+    tickers_input = st.text_input("Tickers (comma-separated)", "TSLA, AMZN, F, NVDA").upper()
 with col2:
     start_date = st.date_input("Start Date", date.today() - timedelta(days=90))
 with col3:
     end_date = st.date_input("End Date", date.today())
 
-col4, col5, col6 = st.columns(3)
+col4, col5 = st.columns(2)
 with col4:
-    env_key = st.selectbox("Environment Key", ["prod", "dev", "stable"], index=0)
-with col5:
     ma_type = st.selectbox("Moving Average Type", ["ema", "sma"], index=0)
-with col6:
+with col5:
     method = st.selectbox("Signal Logic", ["standard", "ema2"], index=0)
 
 # ----------------------------------------
@@ -43,49 +42,62 @@ if start_date >= end_date:
     st.error("⚠️ Start date must be before end date.")
     st.stop()
 
+# Parse ticker list
+tickers = [t.strip().upper() for t in tickers_input.split(",") if t.strip()]
+if not tickers:
+    st.error("⚠️ Please enter at least one valid ticker symbol.")
+    st.stop()
+
 # ----------------------------------------
 # 🚀 Fetch Data from API
 # ----------------------------------------
 if st.button("Get Signals"):
     payload = {
         "query": {
-            "key": env_key,
-            "ticker": ticker,
+            "key": ENV_KEY,
+            "tickers": tickers,
             "start_date": str(start_date),
             "end_date": str(end_date),
             "ma_type": ma_type.lower(),
-            "method": method.lower()
+            "method": method.lower(),
         }
     }
 
-    st.info(f"Fetching {method.upper()} signals for **{ticker}** ({ma_type.upper()}) ...")
+    st.info(f"Fetching {method.upper()} signals for **{', '.join(tickers)}** ...")
     with st.spinner("Processing... please wait"):
         try:
             response = requests.post(API_URL, json=payload)
             if response.status_code != 200:
                 st.error(f"❌ Error {response.status_code}: {response.text}")
-            else:
-                res_json = response.json()
-                data = (
-                    res_json.get("data")
-                    or res_json.get("body", {}).get("data", [])
-                    or res_json.get("body")
-                )
+                st.stop()
 
-                if not data:
-                    st.warning("⚠️ No signal data returned for this range.")
-                    st.stop()
+            res_json = response.json()
+            data = (
+                res_json.get("data")
+                or res_json.get("body", {}).get("data", [])
+                or res_json.get("body")
+            )
 
-                # Convert to DataFrame
-                df = pd.DataFrame(data)
-                if "date" in df.columns:
-                    df["date"] = pd.to_datetime(df["date"], errors="coerce")
+            if not data:
+                st.warning("⚠️ No signal data returned for this range.")
+                st.stop()
 
-                st.success(f"✅ Received {len(df)} rows for {ticker} ({method.upper()} | {ma_type.upper()})")
+            df_all = pd.DataFrame(data)
+            if "date" in df_all.columns:
+                df_all["date"] = pd.to_datetime(df_all["date"], errors="coerce")
 
-                # ----------------------------------------
-                # 🎨 Data styling
-                # ----------------------------------------
+            st.success(f"✅ Received {len(df_all)} total rows across {len(tickers)} tickers")
+
+            # ----------------------------------------
+            # 🧾 Per-Ticker Display
+            # ----------------------------------------
+            for ticker in tickers:
+                st.subheader(f"📊 {ticker} Signals")
+                df = df_all[df_all["ticker"] == ticker].copy()
+                if df.empty:
+                    st.warning(f"No data found for {ticker}.")
+                    continue
+
                 def color_signal(val):
                     if isinstance(val, str):
                         if "STRONG BUY" in val:
@@ -100,21 +112,17 @@ if st.button("Get Signals"):
                             return "background-color: #7f8c8d; color: white"
                     return "background-color: #95a5a6; color: white"
 
-                st.subheader("📊 Signal Table")
                 st.dataframe(
                     df.style.applymap(color_signal, subset=["Signal"]),
                     use_container_width=True,
-                    height=600,
+                    height=400,
                 )
 
-                # ----------------------------------------
-                # 📈 Combined Chart: Price + Momentum
-                # ----------------------------------------
-                with st.expander("📉 Show Price & Momentum Chart"):
+                # Chart
+                with st.expander(f"📉 {ticker} Price & Momentum Chart"):
                     if "MomentumScore" in df.columns:
                         base = alt.Chart(df).encode(x="date:T")
 
-                        # Momentum line (colored by signal)
                         momentum_line = (
                             base.mark_line(point=True, strokeWidth=2)
                             .encode(
@@ -138,44 +146,39 @@ if st.button("Get Signals"):
                                         ],
                                     ),
                                 ),
-                                tooltip=[
-                                    "date:T",
-                                    "Signal:N",
-                                    "MomentumScore:Q",
-                                    "Confidence:N",
-                                ],
+                                tooltip=["date:T", "Signal:N", "MomentumScore:Q", "Confidence:N"],
                             )
                         )
 
                         charts = [momentum_line]
 
-                        # ✅ Add price line if available
                         if "price" in df.columns:
                             price_line = (
                                 base.mark_line(color="#3498db", strokeDash=[3, 2])
                                 .encode(
                                     y=alt.Y("price:Q", axis=alt.Axis(title="Price (USD)", orient="right")),
-                                    tooltip=["date:T", "price:Q"]
+                                    tooltip=["date:T", "price:Q"],
                                 )
                             )
                             charts.append(price_line)
 
-                        final_chart = alt.layer(*charts).resolve_scale(y="independent").properties(
-                            title=f"{ticker} Price vs Momentum ({method.upper()} | {ma_type.upper()})",
-                            width=900,
-                            height=400,
+                        final_chart = (
+                            alt.layer(*charts)
+                            .resolve_scale(y="independent")
+                            .properties(
+                                title=f"{ticker} Price vs Momentum ({method.upper()} | {ma_type.upper()})",
+                                width=900,
+                                height=400,
+                            )
                         )
-
                         st.altair_chart(final_chart, use_container_width=True)
                     else:
                         st.warning("No 'MomentumScore' column found for plotting.")
 
-                # ----------------------------------------
-                # 💾 CSV Download
-                # ----------------------------------------
+                # Individual CSV Download
                 csv_data = df.to_csv(index=False).encode("utf-8")
                 st.download_button(
-                    "⬇️ Download CSV",
+                    f"⬇️ Download {ticker} CSV",
                     data=csv_data,
                     file_name=f"{ticker}_{method}_{ma_type}_signals.csv",
                     mime="text/csv",
