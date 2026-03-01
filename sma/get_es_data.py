@@ -18,7 +18,7 @@ scroll_url = f"{host}/_search/scroll"
 auth = (USERNAME, PASSWORD)
 
 # ==========================================
-# UPDATED QUERY BODY
+# QUERY BODY (all fields)
 # ==========================================
 query_body = {
     "query": {
@@ -35,144 +35,142 @@ query_body = {
             ]
         }
     },
-    "_source": [
-        "Created_at",
-        "Body",
-        "Text",
-        "Ticker",
-        "Sentiment_score",
-        "Sentiment_score_text",
-        "fsai_Sentiment_score",
-        "fsai_Sentiment_score_text",
-        "fsai_Sentiment_label_text",
-        "fsai_Sentiment_label",
-        "url",
-        "fsai_sentiment",
-        "fsai_Targeted_Sentiment"
-    ],
     "size": 500
 }
 
 # ==========================================
-# SCROLL WITH PROGRESS
+# SCROLL FUNCTION
 # ==========================================
-def scroll_all_data():
+def scroll_all_data(max_docs=1000):
     print("🚀 Starting initial search...")
 
-    # INITIAL SEARCH
     response = requests.post(
-    search_url,
-    auth=auth,
-    json=query_body,
-    headers={"Content-Type": "application/json"},
-    timeout=30
-)
-
-    print("HTTP Status:", response.status_code)
-    print("RAW Response (first 500 chars):")
-    print(response.text[:500])
-
+        search_url,
+        auth=auth,
+        json=query_body,
+        headers={"Content-Type": "application/json"},
+        timeout=30
+    )
 
     data = response.json()
 
     scroll_id = data.get("_scroll_id")
     hits = data["hits"]["hits"]
 
-    total_count = data["hits"]["total"]["value"] if "total" in data["hits"] else None
-    print(f"⚡ Initial batch: {len(hits)} docs")
+    total = data["hits"]["total"]["value"]
+    print(f"⚡ Initial docs: {len(hits)}")
 
     all_docs = hits.copy()
-
-    # tqdm progress bar
-    pbar = tqdm(total=total_count, unit="docs") if total_count else tqdm(unit="docs")
+    
+    # If we already have enough docs, return early
+    if len(all_docs) >= max_docs:
+        print(f"🛑 Reached limit of {max_docs} docs.")
+        return all_docs[:max_docs]
+    
+    pbar = tqdm(total=min(total, max_docs), unit="docs")
     pbar.update(len(hits))
 
-    # SCROLL LOOP
-    while True:
-        if not scroll_id:
-            print("❌ No scroll_id returned. Stopping.")
-            break
-
+    while len(all_docs) < max_docs:
         response = requests.post(
             scroll_url,
             auth=auth,
             json={"scroll": "2m", "scroll_id": scroll_id},
-            headers={"Content-Type": "application/json"}
+            headers={"Content-Type": "application/json"},
+            timeout=30
         )
-
         data = response.json()
         hits = data["hits"]["hits"]
 
-        if not hits:  # no more data
-            print("✔ No more documents.")
+        if not hits:
             break
 
         all_docs.extend(hits)
-        pbar.update(len(hits))
+        pbar.update(min(len(hits), max_docs - len(all_docs) + len(hits)))
+        
+        if len(all_docs) >= max_docs:
+            print(f"🛑 Reached limit of {max_docs} docs. Stopping early.")
+            all_docs = all_docs[:max_docs]
+            break
+        
+        scroll_id = data.get("_scroll_id")
 
     pbar.close()
     print(f"🎉 Total retrieved: {len(all_docs)}")
     return all_docs
 
-
-
+# ==========================================
+# SAFE JSON SERIALIZER
+# ==========================================
 def safe_json(value):
-    """Return JSON string for lists/dicts, or empty string."""
     if isinstance(value, (dict, list)):
         return json.dumps(value, ensure_ascii=False)
-    return value if value is not None else ""
+    return "" if value is None else value
 
 # ==========================================
-# CSV EXPORT (FIXED!)
+# CSV EXPORT
 # ==========================================
-def save_to_csv(all_docs, filename="news_export.csv"):
+def save_to_csv(all_docs, filename="news_fsai_export.csv"):
     print("📦 Saving CSV...")
 
     fieldnames = [
         "_id",
-        "Created_at",
+        "Ticker",
         "Body",
         "Text",
-        "Ticker",
-        "Sentiment_score",
-        "Sentiment_score_text",
-        "fsai_Sentiment_score",
+        "Author",
+        "Host",
+        "url",
+        "Created_at",
+        "market_time_news",
         "fsai_Sentiment_score_text",
         "fsai_Sentiment_label_text",
-        "fsai_Sentiment_label",
-        "url",
-        "fsai_sentiment",
-        "fsai_Targeted_Sentiment"
+        "fsai_Targeted_Sentiment",
+        "fsai_Keyword",
+        "fsai_SVO",
+        "fsai_Company",
+        "fsai_Person",
+        "fsai_Concept",
+        "fsai_Categories"
     ]
 
     with open(filename, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
 
-        for doc in all_docs:
-            src = doc.get("_source", {})
+        for hit in all_docs:
+            src = hit.get("_source", {})
 
             writer.writerow({
-                "_id": doc.get("_id"),
-                "Created_at": src.get("Created_at"),
-                "Body": src.get("Body"),
-                "Text": src.get("Text"),
-                "Ticker": src.get("Ticker"),
-                "Sentiment_score": src.get("Sentiment_score"),
-                "Sentiment_score_text": src.get("Sentiment_score_text"),
-                "fsai_Sentiment_score": src.get("fsai_Sentiment_score"),
-                "fsai_Sentiment_score_text": src.get("fsai_Sentiment_score_text"),
-                "fsai_Sentiment_label_text": src.get("fsai_Sentiment_label_text"),
-                "fsai_Sentiment_label": src.get("fsai_Sentiment_label"),
-                "url": src.get("url"),
-                "fsai_sentiment": safe_json(src.get("fsai_sentiment")),
-                "fsai_Targeted_Sentiment": safe_json(src.get("fsai_Targeted_Sentiment"))
+                "_id": hit.get("_id"),
+                "Ticker": src.get("Ticker", ""),
+                "Body": src.get("Body", ""),
+                "Text": src.get("Text", ""),
+                "Author": src.get("Author", ""),
+                "Host": src.get("Host", ""),
+                "url": src.get("url", ""),
+                "Created_at": src.get("Created_at", ""),
+                "market_time_news": src.get("market_time_news", ""),
+
+                # sentiment fields
+                "fsai_Sentiment_score_text": src.get("fsai_Sentiment_score_text", ""),
+                "fsai_Sentiment_label_text": src.get("fsai_Sentiment_label_text", ""),
+
+                # complex fields serialized safely
+                "fsai_Targeted_Sentiment": safe_json(src.get("fsai_Targeted_Sentiment")),
+                "fsai_Keyword": safe_json(src.get("fsai_Keyword")),
+                "fsai_SVO": safe_json(src.get("fsai_SVO")),
+                "fsai_Company": safe_json(src.get("fsai_Company")),
+                "fsai_Person": safe_json(src.get("fsai_Person")),
+                "fsai_Concept": safe_json(src.get("fsai_Concept")),
+                "fsai_Categories": safe_json(src.get("fsai_Categories"))
             })
 
     print(f"✅ CSV saved: {filename}")
+
+
 # ==========================================
 # RUN SCRIPT
 # ==========================================
 if __name__ == "__main__":
-    docs = scroll_all_data()
+    docs = scroll_all_data(max_docs=1000)
     save_to_csv(docs)
